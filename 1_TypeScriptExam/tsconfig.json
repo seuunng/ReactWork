@@ -1,0 +1,9 @@
+//설정파일을 만들때는 tsconfig.json이라는 이름으로 만들어야 
+//따로 설정을 하지 않아도 바로 적용이 된다.
+{
+    "compilerOptions": {
+        //에러가 있을때 자바스크립트 파일이 만들어 지지 않게 하는 옵션
+        "noEmitOnError": true,
+        "strictNullChecks": false,
+    }
+}
