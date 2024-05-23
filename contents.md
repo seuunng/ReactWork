@@ -139,6 +139,10 @@ npx create-react-app 3_react_auto --template typescript
                                 *Funtion Component LifeCycle
                                 mounting Run Function => useEffect 실행
                                 updating Run Function => useEffect 실행
-                                unmounting
+                                unmounting              clean-up 실행
                         useMemo
+                                리턴하는 값은 값 자체이다. 이 값을 Memoization한다.
                         useCallback
+                                리턴하는 값은 함수 자체이다. 이것을 Memoization한다.
+                        useReducer
+                                const[state, dispatch] = useReducer(함수, 초기값)

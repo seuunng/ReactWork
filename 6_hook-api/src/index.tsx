@@ -1,19 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+//hooks 예제
+//import './index.css';
+//import App from './App';
+//import reportWebVitals from './reportWebVitals';
+//import FCounter from './FCounter';
+
+
+//reducer 예제
+//import App1 from './reducer/App1'; 
+//import App2 from './reducer/App2'; 
+//import App3 from './reducer/App3'; 
+//import App4 from './reducer/App4';
+import App5 from './reducer/App5';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  //<FCounter title="이것은 COUNTER입니다"  num={0}></FCounter>
+  <App5></App5>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//reportWebVitals();
