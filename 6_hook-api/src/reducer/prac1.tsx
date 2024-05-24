@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-//리듀서 함수정의: 상태(state)를 업데이트하는 역할
-//Action함수에 type이 정의되어 있어서 action.type을 사용할 수 있음
 const Reducer = (state: string, action: { type: string; value?: string }):string=>{
     switch(action.type){
         case 'select':
@@ -11,7 +9,7 @@ const Reducer = (state: string, action: { type: string; value?: string }):string
     }
 }
 
-const App5:React.FC = ()=>{
+const prac1:React.FC = ()=>{
     const [result, Dispatcher] = React.useReducer(Reducer, '');
     const [value, setValue] = React.useState<string>('');
     const select =()=>{
@@ -30,11 +28,8 @@ const App5:React.FC = ()=>{
             <button onClick={select}>확인</button>
         </div>
         );
-  
 }
-
-
-export default App5;
+export default prac1;
 
 
 // 과제: 라디오 버튼의 value를 출력 
