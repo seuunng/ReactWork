@@ -39,8 +39,30 @@
 
 .game {
   display: flex; /*나란히 줄을 세우겠다.*/
-  flex-direction: row; /*행으로 나란히*/
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 .game-info{
   margin-left: 20px;
+  margin-top: 16px;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+.move-button{
+  width: 200px;
+  background-color: #27ae60;
+  border-width: 0px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 200;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  text-decoration: none;
+
 }

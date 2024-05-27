@@ -4,8 +4,7 @@ import './Square.css'
 const square = ({onClick, value, isWinningSquare }) => {
 
     return(
-        <button className={`square ${isWinningSquare ? 'winnner' : ''}`} 
-                onClick={onClick}>
+        <button onClick={onClick}>
             {value}
         </button>
     )
