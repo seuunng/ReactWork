@@ -146,3 +146,5 @@ npx create-react-app 3_react_auto --template typescript
                                 리턴하는 값은 함수 자체이다. 이것을 Memoization한다.
                         useReducer
                                 const[state, dispatch] = useReducer(함수, 초기값)
+
+*백엔드랑 연결하는 라이브러리 설치: npm install axios
