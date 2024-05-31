@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+    .btn {
+        margin : 3px;
+        padding: 3px;
+        background-color: white;
+    }
+    .list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }

@@ -1,56 +1,42 @@
-import instance from "../api/axios";
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-const EmployeeForm = ({addEmployee, updateEmployee, editingEmployee, setEditingEmployee}) => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    
+//부모로 부터 받아온 데이터: 추가함수, 수정함수, 수정상태 직원, 직원 수정상태 수정 함수
+const EmployeeForm = ({ editingEmployee, setEditingEmployee, handleSubmit, handleUpdateClick, name, email, setName, setEmail }) => {
+
+    // 수정상태의 직원이 있을때 해당 직원의 이름과 이메일을 작성
     useEffect(() => {
         if (editingEmployee) {
-          setName(editingEmployee.name);
-          setEmail(editingEmployee.email);
+            setName(editingEmployee.name);
+            setEmail(editingEmployee.email);
         }
-      }, [editingEmployee]);
-
-    const handleSubmit = async (e)=>{  
-        e.preventDefault(); //먼저 서버를 중지시키고, 비동기식으로 데이터처리코드 진행
-        try{
-            if (editingEmployee) {
-                await updateEmployee(editingEmployee.id, name, email);
-              } else {
-                await addEmployee(name, email);
-              }
-            setName('');
-            setEmail(''); //비동기는 코드의 순서가 중요
-            setEditingEmployee(null);
-             
-        }
-        catch(err){
-            console.error("insert employee : ",err)
-        }
-        
-    }
-    // axios.delete('/');
-    // axios.put('/');
-    return(
+    }, [editingEmployee]); //의존성으로 수정상태 직원을 넣었음, 수정상태직원에 변동이 있을때마다 다시 실행됨
+    
+    return (
         <form onSubmit={handleSubmit}>
             <div>
                 <label>Name </label>
-                <input type="text" value={name} onChange={e=>setName(e.target.value)} required />
+                <input type="text" value={name} onChange={e => setName(e.target.value)} required className="btn" />
             </div>
             <div>
                 <label>Email </label>
-                <input type="email" value={email} onChange={e=>setEmail(e.target.value)}></input>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="btn"></input>
             </div>
-            <button type="submit">{editingEmployee ? '수정' : '추가'}</button>
-            {editingEmployee ? <button type="submit" 
-                onClick={()=>{
-                return setName(''),
-                    setEmail(''),
-                    setEditingEmployee(null);
-                }}
-            >취소</button> : ''}
+            {/* 수정 상태의 직원이 있을때 수정/추가로 변동되게 삼항연산자 설정 */}
+            <button type="submit" className="btn">{editingEmployee ? ' 수정 ' : ' 추가 '}</button>
+            {/* 수정상태일때만 취소버튼이 생성되도록 삼항연산자 설정 */}
+            {editingEmployee ?
+                <button className="btn"
+                    style={{ backgroundColor: 'lightgrey' }}
+                    type="submit"
+                    onClick={() => {
+                        return setName(''),
+                            setEmail(''),
+                            setEditingEmployee(null);
+                    }}
+                > 취소 </button> : ''}
         </form>
     )
 }
+
+
 export default EmployeeForm;

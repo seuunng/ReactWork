@@ -1,73 +1,88 @@
 import './App.css';
 import EmployeeList from './components/EmployeeList';
 import EmployeeForm from './components/EmployeeForm';
-import {useState, useEffect} from 'react';
+import {updateEmployee, addEmployee, fetchEmployees, deleteEmployeeok} from './api/crudApi'
+import { useState, useEffect } from 'react';
 import instance from "./api/axios";
 
 function App() {
+  //백엔드로 전달할 회원정보 객체(id, name, email)
   const [employees, setEmployees] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  // 현재 수정 중인 직원을 저장하기 위한 변수
   const [editingEmployee, setEditingEmployee] = useState(null);
 
-  const fetchEmployees = async () => {
-      try {
-          const response = await instance.get('/emp');
-          if (Array.isArray(response.data)) {
-              setEmployees(response.data);
-          } else {
-              console.error('Response data is not an array:', response.data);
-          }
-      } catch (err) {
-          console.error('fetch error:', err);
-      }
-  };
+  //employee가 배열이 맞으면 값을 수정하게한 함수를 마운트될때 실행되게 함 
+  useEffect(() => { 
+    loadEmployees();
+  }, []);//의존성이 비어있으면 마운트될때 한번만 실행되고 실행안됨
 
-  useEffect(() => {
-      fetchEmployees();
-  }, []);
-
-  const addEmployee = async (name, email) => {
-      try {
-          await instance.post('/emp', { name, email });
-          fetchEmployees(); // 새로운 데이터를 추가한 후 리스트를 다시 불러옵니다.
-      } catch (err) {
-          console.error('insert employee:', err);
-      }
-  };
-  const deleteEmployee = async (id) => {
+  const loadEmployees = async ()=>{
     try {
-      console.log(`Deleting employee with id: ${id}`); // 디버깅을 위해 추가
-        await instance.delete(`/${id}`);
-        fetchEmployees(); // 새로운 데이터를 추가한 후 리스트를 다시 불러옵니다.
+      const data = await fetchEmployees();
+      setEmployees(data);
+      console.log('fetch employees 실행');
     } catch (err) {
-        console.error('delete employee:', err);
+      console.error('Failed to fetch employees:', err);
     }
   };
-  
-  const updateEmployee = async (id, name, email) => {
-    try {
-      const updatedEmployee = { id, name, email }
-        console.log(`Udating employee with id: ${id}`); // 디버깅을 위해 추가
-        await instance.put(`/${id}`, updatedEmployee);
-        fetchEmployees(); // 새로운 데이터를 추가한 후 리스트를 다시 불러옵니다.
-    } catch (err) {
-        console.error('update employee:', err);
+
+  const handleSubmit = async (e)=>{
+    e.preventDefault(); //먼저 서버를 중지시키고, 비동기식으로 데이터처리코드 진행
+    //수정할 직원이 있으면 업데이트 실행
+    if(editingEmployee){
+      await updateEmployee({id:editingEmployee.id, name, email});
+      console.log(editingEmployee.id)
     }
+    // 없으면 추가 진행
+    else{
+      await addEmployee({name, email});
+      console.log('add 실행');
+    }
+    setName('');
+    setEmail('');
+    //수정할 직원 없는걸로 초기화
+    setEditingEmployee(null);
+    loadEmployees();
   };
   
+  //리스트에 삭제버튼을 누르면 데이터 삭제를 확인
+  const deleteEmployee = async  (id, name) => {
+    if (window.confirm(`정말로 ${name}님을 삭제하시겠습니까?`)) {
+      await deleteEmployeeok(id);
+      loadEmployees();
+    } else {
+      return;
+    }
+  };
+
+  const handleUpdateClick = (emp) => {
+    // setName(emp.name);
+    // setEmail(emp.email);
+    // setEditingEmployee(emp);
+  }
+
   return (
     <div className="App">
       <h1>Employee Management</h1>
+      {/* 각 컴포넌트로 보내줄 데이터 */}
       <EmployeeForm
-        addEmployee={addEmployee}
-        updateEmployee={updateEmployee}
+        name={name} 
+        setName={setName}
+        email={email}
+        setEmail={setEmail}
+        handleSubmit={handleSubmit}
         editingEmployee={editingEmployee}
         setEditingEmployee={setEditingEmployee}
-      ></EmployeeForm>
+        handleUpdateClick={handleUpdateClick}
+      ></EmployeeForm>  {/* 속성을 여러개 쓸때는 콤마를 사용하지 않는다. */}
       <hr></hr>
-      <EmployeeList 
-        employees={employees} 
-        deleteEmployee={deleteEmployee} 
+      <EmployeeList
+        employees={employees}
+        deleteEmployee={deleteEmployee}
         setEditingEmployee={setEditingEmployee}
+        handleUpdateClick={handleUpdateClick}
       >
       </EmployeeList>
 
